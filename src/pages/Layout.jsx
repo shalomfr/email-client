@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/Input';
 import {
   Mail, Edit, Send, Star, Trash2, Archive, Inbox, Settings, Menu, X, User, Search,

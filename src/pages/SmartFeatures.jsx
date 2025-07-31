@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Email } from '../api/realEmailAPI';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/Input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';

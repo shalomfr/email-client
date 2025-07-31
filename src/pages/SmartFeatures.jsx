@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Email } from '../api/realEmailAPI';
 import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/Input';
+import { Input } from '../components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';

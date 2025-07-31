@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/Input';
+import { Input } from '../components/ui/input';
 import {
   Mail, Edit, Send, Star, Trash2, Archive, Inbox, Settings, Menu, X, User, Search,
   Bell, Plus, Filter, SortAsc, RefreshCw, Zap, Calendar, Users, FolderOpen, Tag, ClipboardCheck

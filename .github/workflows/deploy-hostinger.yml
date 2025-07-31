@@ -48,33 +48,33 @@ jobs:
       run: |
         find dist -name "*.js" -type f -exec sed -i 's|http://localhost:3001|https://${{ secrets.DOMAIN_NAME }}|g' {} +
     
-    # שלב 7: פריסת Frontend ל-Hostinger
-    - name: 🚀 Deploy Frontend to Hostinger
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+    # שלב 7: פריסה של Frontend דרך FTP
+    - name: 📤 Deploy Frontend to Hostinger
+      uses: SamKirkland/FTP-Deploy-Action@4.3.4
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./dist/
-        server-dir: ./public_html/
+        server-dir: public_html/
         exclude: |
           **/.git*
           **/.git*/**
           **/node_modules/**
     
-    # שלב 8: פריסת Backend
-    - name: 🚀 Deploy Backend to Hostinger
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+    # שלב 8: פריסה של Backend דרך FTP
+    - name: 📤 Deploy Backend to Hostinger
+      uses: SamKirkland/FTP-Deploy-Action@4.3.4
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./backend/
-        server-dir: ./email-backend/
+        server-dir: public_html/backend/
         exclude: |
+          **/.git*
+          **/.git*/**
           **/node_modules/**
-          **/.env
-          **/*.log
     
     # שלב 9: הודעת הצלחה
     - name: ✅ Deployment Complete

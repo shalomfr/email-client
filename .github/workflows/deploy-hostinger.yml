@@ -1,0 +1,84 @@
+name: 🚀 Deploy to Hostinger
+
+# מתי להריץ את הפריסה
+on:
+  # פריסה אוטומטית בכל push ל-main
+  push:
+    branches: [ main ]
+  
+  # אפשרות להריץ ידנית
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: 📦 Build and Deploy
+    runs-on: ubuntu-latest
+    
+    steps:
+    # שלב 1: הורדת הקוד
+    - name: 📥 Checkout code
+      uses: actions/checkout@v3
+    
+    # שלב 2: הגדרת Node.js
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    # שלב 3: התקנת תלויות Frontend
+    - name: 📦 Install frontend dependencies
+      run: npm ci
+    
+    # שלב 4: בניית Frontend
+    - name: 🔨 Build frontend
+      run: npm run build
+      env:
+        CI: false  # מתעלם מ-warnings
+    
+    # שלב 5: הכנת Backend
+    - name: 📦 Prepare backend
+      run: |
+        cd backend
+        npm ci --production
+        cd ..
+    
+    # שלב 6: עדכון כתובת API
+    - name: 🔗 Update API URL
+      run: |
+        find dist -name "*.js" -type f -exec sed -i 's|http://localhost:3001|https://${{ secrets.DOMAIN_NAME }}|g' {} +
+    
+    # שלב 7: פריסת Frontend ל-Hostinger
+    - name: 🚀 Deploy Frontend to Hostinger
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./dist/
+        server-dir: ./public_html/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+    
+    # שלב 8: פריסת Backend
+    - name: 🚀 Deploy Backend to Hostinger
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./backend/
+        server-dir: ./email-backend/
+        exclude: |
+          **/node_modules/**
+          **/.env
+          **/*.log
+    
+    # שלב 9: הודעת הצלחה
+    - name: ✅ Deployment Complete
+      run: |
+        echo "🎉 Deployment successful!"
+        echo "🌐 Site: https://${{ secrets.DOMAIN_NAME }}"
+        echo "📅 Time: $(date)"
